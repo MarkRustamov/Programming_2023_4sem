@@ -1,0 +1,56 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="is.technologies.interfaces.CarModelMapper">
+    <resultMap id="carModel" type="is.technologies.entities.CarModel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="length" column="length"/>
+        <result property="width" column="width"/>
+        <result property="bodyType" column="body_type"/>
+        <result property="height" column="height"/>
+        <association property="carBrand" javaType="is.technologies.entities.CarBrand" column="car_brand" foreignColumn="id" select="is.technologies.interfaces.CarBrandMapper.getById">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="foundingDate" column="date"/>
+        </association>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into car_model(name, length, width, body_type, car_brand, height) values(#{name}, #{length}, #{width}, #{bodyType}, #{carBrand.id}, #{height})
+    </insert>
+
+    <delete id="deleteById" parameterType="long">
+        delete from car_model where id = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        delete from car_model
+    </delete>
+
+    <update id="update">
+        update car_model
+        <set>
+            name = #{name},
+            length = #{length},
+            width = #{width},
+            body_type = #{bodyType},
+            car_brand = #{carBrand.id},
+            height = #{height}
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" parameterType="long" resultMap="carModel">
+        select * from car_model where id = #{id}
+    </select>
+
+    <select id="getAll" resultMap="carModel">
+        select * from car_model
+    </select>
+
+    <select id="getAllByVId" parameterType="long" resultMap="carModel">
+        select * from car_model where car_brand = #{id}
+    </select>
+</mapper>

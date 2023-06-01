@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="is.technologies.interfaces.CarBrandMapper">
+    <resultMap id="carBrand" type="is.technologies.entities.CarBrand">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="foundingDate" column="date"/>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into car_brand(name, date) values(#{name}, #{foundingDate})
+    </insert>
+
+    <delete id="deleteById" parameterType="long">
+        delete from car_brand where id = #{id}
+    </delete>
+
+    <delete id="deleteAll">
+        delete from car_brand
+    </delete>
+
+    <update id="update">
+        update car_brand
+        <set>
+            name = #{name},
+            date = #{foundingDate}
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="getById" parameterType="long" resultMap="carBrand">
+        select * from car_brand where id = #{id}
+    </select>
+
+    <select id="getAll" resultMap="carBrand">
+        select * from car_brand
+    </select>
+</mapper>
